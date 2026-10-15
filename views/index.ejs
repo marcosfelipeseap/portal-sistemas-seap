@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu de Sistemas - SCP / UGTR / SEAP</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+      :root {
+        --primary-color: #0a7d2a; 
+        --dark-color: #044c14;    
+        --bg-color: #ecf0f3;
+        --text-dark: #2c3e50;
+        --card-bg: #ffffff;
+        --whatsapp-color: #25D366;
+        --copy-color: #546e7a;
+        --hover-shadow: 0 20px 30px rgba(0,0,0,0.15);
+        --card-shadow: 0 10px 20px rgba(0,0,0,0.08);
+      }
+
+      body {
+        font-family: 'Inter', sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: var(--bg-color);
+        color: var(--text-dark);
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+
+      .background-watermark {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        pointer-events: none;
+        opacity: 0.10;
+        background-image: url('https://drive.google.com/thumbnail?id=1UiTilaGjLjqwo8_jqJBFPzttmMtjKv9x&sz=w1200');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 1200px auto; 
+      }
+
+      header {
+        background: linear-gradient(120deg, var(--dark-color), var(--primary-color));
+        color: white;
+        padding: 30px 20px 35px;
+        text-align: center;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        z-index: 2;
+        position: relative;
+      }
+
+      .user-bar {
+        max-width: 1200px;
+        margin: 0 auto 20px auto;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 12px;
+        font-size: 0.9rem;
+      }
+
+      .user-badge {
+        background: rgba(255, 255, 255, 0.15);
+        padding: 7px 15px;
+        border-radius: 20px;
+        font-weight: 500;
+      }
+
+      .btn-admin {
+        background: #f39c12;
+        color: #fff;
+        text-decoration: none;
+        padding: 7px 15px;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 0.85rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition: background 0.2s, transform 0.2s;
+      }
+
+      .btn-admin:hover {
+        background: #d68910;
+        transform: translateY(-1px);
+      }
+
+      .badge-count {
+        background: #c0392b;
+        color: white;
+        padding: 2px 8px;
+        border-radius: 10px;
+        font-size: 0.75rem;
+        font-weight: 700;
+      }
+
+      .btn-logout {
+        background: #e74c3c;
+        color: white;
+        text-decoration: none;
+        padding: 7px 15px;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 0.85rem;
+        transition: background 0.2s, transform 0.2s;
+      }
+
+      .btn-logout:hover {
+        background: #c0392b;
+        transform: translateY(-1px);
+      }
+
+      header h1 {
+        font-family: 'Poppins', sans-serif;
+        margin: 0;
+        font-size: 2.2rem;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+      }
+
+      header p {
+        font-family: 'Poppins', sans-serif;
+        margin: 10px 0 0;
+        opacity: 0.95;
+        font-size: 1.1rem;
+        font-weight: 500;
+        letter-spacing: 1.5px;
+      }
+
+      .main-wrapper {
+        max-width: 1200px;
+        margin: 0 auto 50px auto;
+        padding: 0 20px;
+        z-index: 2;
+        position: relative;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      .grid-title {
+        font-family: 'Poppins', sans-serif;
+        color: var(--dark-color);
+        font-size: 1.4rem;
+        font-weight: 700;
+        margin: 40px 0 20px 0;
+        text-transform: uppercase;
+        border-left: 5px solid var(--primary-color);
+        padding-left: 15px;
+        letter-spacing: 0.5px;
+      }
+
+      .grid-container {
+        display: grid;
+        gap: 25px;
+        grid-template-columns: 1fr;
+      }
+
+      @media (min-width: 600px) {
+        .grid-container {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      @media (min-width: 992px) {
+        .grid-container {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+
+      .card {
+        background: var(--card-bg);
+        border-radius: 20px;
+        box-shadow: var(--card-shadow);
+        transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        border: none;
+        transform: perspective(1px) translateZ(0);
+        height: 100%;
+      }
+
+      .card:hover {
+        transform: scale(1.03) translateY(-8px);
+        box-shadow: var(--hover-shadow);
+      }
+
+      .card-link {
+        text-decoration: none;
+        color: var(--text-dark);
+        padding: 30px 25px;
+        flex-grow: 1;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        transition: color 0.3s ease;
+      }
+
+      .main-icon {
+        width: 32px;
+        height: 32px;
+        fill: var(--primary-color);
+        flex-shrink: 0;
+        transition: all 0.4s ease;
+        background: rgba(10, 125, 42, 0.08); 
+        padding: 12px;
+        border-radius: 12px;
+      }
+
+      .card-title {
+        font-family: 'Poppins', sans-serif;
+        font-weight: 600;
+        font-size: 1.05rem;
+        text-transform: uppercase;
+        flex-grow: 1;
+        line-height: 1.3;
+      }
+
+      .chevron-icon {
+        width: 24px;
+        height: 24px;
+        fill: var(--copy-color);
+        opacity: 0;
+        transform: translateX(-15px);
+        transition: all 0.4s ease;
+        flex-shrink: 0;
+      }
+
+      .card:hover .card-link { color: var(--primary-color); }
+      .card:hover .main-icon {
+        transform: scale(1.1) rotate(-5deg);
+        background: var(--primary-color);
+        fill: #ffffff;
+      }
+      .card:hover .chevron-icon { 
+        opacity: 1; 
+        transform: translateX(0); 
+        fill: var(--primary-color); 
+      }
+
+      .card-actions {
+        display: flex;
+        background-color: #f8fafd;
+        border-top: 1px solid rgba(0,0,0,0.06);
+      }
+
+      .action-btn {
+        flex: 1;
+        border: none;
+        background: transparent;
+        padding: 15px 0;
+        font-size: 0.9rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition: all 0.3s ease;
+        font-weight: 500;
+        font-family: 'Inter', sans-serif;
+        text-decoration: none;
+        color: #555;
+      }
+      
+      .action-btn:hover { background-color: rgba(0,0,0,0.04); }
+      .icon { width: 18px; height: 18px; fill: currentColor; }
+      .btn-whatsapp { border-right: 1px solid rgba(0,0,0,0.06); }
+      .btn-whatsapp:hover { color: var(--whatsapp-color); }
+      .btn-copy:hover { color: var(--primary-color); }
+
+      #toast {
+        visibility: hidden;
+        min-width: 280px;
+        background-color: var(--dark-color);
+        color: #fff;
+        text-align: center;
+        border-radius: 12px;
+        padding: 16px;
+        position: fixed;
+        z-index: 100;
+        left: 50%;
+        bottom: 30px;
+        transform: translateX(-50%) translateY(50px);
+        font-size: 1rem;
+        font-weight: 500;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        opacity: 0;
+        transition: all 0.4s;
+      }
+
+      #toast.show {
+        visibility: visible;
+        opacity: 1;
+        bottom: 50px;
+        transform: translateX(-50%) translateY(0);
+      }
+
+      footer {
+        text-align: center;
+        padding: 40px 20px;
+        font-size: 0.9rem;
+        color: #7f8c8d;
+        z-index: 2;
+        margin-top: auto;
+        font-weight: 500;
+      }
+    </style>
+  </head>
+  <body>
+
+    <div class="background-watermark"></div>
+
+    <header>
+      <div class="user-bar">
+        <span class="user-badge">
+          Olá, <strong><%= usuario.nome %></strong> (@<%= usuario.username %>)
+          <% if (usuario.cargo === 'admin') { %> | <strong>ADMIN</strong> <% } %>
+        </span>
+
+        <% if (usuario.cargo === 'admin') { %>
+          <a href="/admin/usuarios" class="btn-admin">
+            Gerenciar Usuários
+            <% if (pendentesCount > 0) { %>
+              <span class="badge-count"><%= pendentesCount %> pendente(s)</span>
+            <% } %>
+          </a>
+        <% } %>
+
+        <a href="/logout" class="btn-logout">Sair</a>
+      </div>
+
+      <h1>Menu de Sistemas</h1>
+      <p>SCP / UGTR / SATRE / SEAP</p>
+    </header>
+
+    <div class="main-wrapper">
+
+      <div class="grid-title">Painéis de Gestão</div>
+      
+      <div class="grid-container">
+        <% gestao.forEach(item => { %>
+          <div class="card">
+            <!-- Painéis de Gestão passam pela rota de segurança SSO -->
+            <a href="/ir/<%= item.key %>" target="_blank" class="card-link">
+              <svg class="main-icon" viewBox="0 0 24 24"><path d="<%= item.svgPath %>"/></svg>
+              <span class="card-title"><%= item.titulo %></span>
+              <svg class="chevron-icon" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+            </a>
+            <div class="card-actions">
+              <a href="#" onclick="shareWhatsapp('<%= item.titulo %>', '<%= item.shareUrl || item.url %>'); return false;" class="action-btn btn-whatsapp">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M19.05 4.91A9.816 9.816 0 0 0 12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.79 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01zm-7.01 15.24c-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.264 8.264 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24 2.2 0 4.27.86 5.82 2.42a8.183 8.183 0 0 1 2.41 5.83c.02 4.54-3.68 8.23-8.22 8.23zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.12-.17.25-.64.81-.78.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-1.99-1.24-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43s.17-.25.25-.41c.08-.17.04-.31-.02-.43s-.56-1.34-.76-1.84c-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.22.25-.86.85-.86 2.07s.89 2.4 1.01 2.56c.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.14-1.18s-.22-.16-.47-.28z"/></svg> WhatsApp
+              </a>
+              <button onclick="copyLink('<%= item.shareUrl || item.url %>')" class="action-btn btn-copy">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg> Copiar
+              </button>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+      
+      <div class="grid-title">Sistemas e Registros</div>
+      
+      <div class="grid-container">
+        <% sistemas.forEach(item => { %>
+          <div class="card">
+            <!-- Sistemas e Registros abrem direto (possuem login próprio) -->
+            <a href="<%= item.url %>" target="_blank" class="card-link">
+              <svg class="main-icon" viewBox="0 0 24 24"><path d="<%= item.svgPath %>"/></svg>
+              <span class="card-title"><%= item.titulo %></span>
+              <svg class="chevron-icon" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+            </a>
+            <div class="card-actions">
+              <a href="#" onclick="shareWhatsapp('<%= item.titulo %>', '<%= item.shareUrl || item.url %>'); return false;" class="action-btn btn-whatsapp">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M19.05 4.91A9.816 9.816 0 0 0 12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.79 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01zm-7.01 15.24c-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.264 8.264 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24 2.2 0 4.27.86 5.82 2.42a8.183 8.183 0 0 1 2.41 5.83c.02 4.54-3.68 8.23-8.22 8.23zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.12-.17.25-.64.81-.78.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-1.99-1.24-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43s.17-.25.25-.41c.08-.17.04-.31-.02-.43s-.56-1.34-.76-1.84c-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.22.25-.86.85-.86 2.07s.89 2.4 1.01 2.56c.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.14-1.18s-.22-.16-.47-.28z"/></svg> WhatsApp
+              </a>
+              <button onclick="copyLink('<%= item.shareUrl || item.url %>')" class="action-btn btn-copy">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg> Copiar
+              </button>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+
+    </div>
+
+    <footer>
+      &copy; 2026 Portal de Sistemas Integrados - SCP / UGTR / SEAP
+    </footer>
+    
+    <div id="toast">Link copiado para a área de transferência!</div>
+
+    <script>
+      function shareWhatsapp(title, url) {
+        var text = "Acesse o sistema *" + title + "* pelo link: " + url;
+        var waUrl = "https://wa.me/?text=" + encodeURIComponent(text);
+        window.open(waUrl, '_blank');
+      }
+
+      function copyLink(url) {
+        if (navigator.clipboard && window.isSecureContext) {
+          navigator.clipboard.writeText(url).then(showToast);
+        } else {
+          let textArea = document.createElement("textarea");
+          textArea.value = url;
+          textArea.style.position = "fixed";
+          document.body.appendChild(textArea);
+          textArea.focus();
+          textArea.select();
+          try {
+            document.execCommand('copy');
+            showToast();
+          } catch (err) {
+            console.error('Copy failed', err);
+          }
+          document.body.removeChild(textArea);
+        }
+      }
+
+      function showToast() {
+        var x = document.getElementById("toast");
+        x.className = "show";
+        setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3500);
+      }
+    </script>
+  </body>
+</html>

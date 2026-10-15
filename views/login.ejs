@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Acesso - Portal de Sistemas SCP / UGTR / SEAP</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #0a7d2a;
+      --dark-color: #044c14;
+      --bg-color: #ecf0f3;
+      --text-dark: #2c3e50;
+      --card-bg: #ffffff;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: var(--bg-color);
+      color: var(--text-dark);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .background-watermark {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.10;
+      background-image: url('https://drive.google.com/thumbnail?id=1UiTilaGjLjqwo8_jqJBFPzttmMtjKv9x&sz=w1200');
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 1200px auto;
+    }
+
+    .auth-container {
+      background: var(--card-bg);
+      width: 100%;
+      max-width: 430px;
+      border-radius: 20px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.12);
+      overflow: hidden;
+      z-index: 2;
+      position: relative;
+    }
+
+    .auth-header {
+      background: linear-gradient(120deg, var(--dark-color), var(--primary-color));
+      color: white;
+      padding: 30px 25px;
+      text-align: center;
+    }
+
+    .auth-header h1 {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      font-size: 1.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+
+    .auth-header p {
+      margin: 6px 0 0;
+      font-size: 0.85rem;
+      opacity: 0.9;
+      letter-spacing: 1px;
+    }
+
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid #e0e6ed;
+      background: #f8fafd;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 15px;
+      border: none;
+      background: transparent;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: #7f8c8d;
+      cursor: pointer;
+      transition: all 0.3s;
+      border-bottom: 3px solid transparent;
+    }
+
+    .tab-btn.active {
+      color: var(--primary-color);
+      border-bottom-color: var(--primary-color);
+      background: #fff;
+    }
+
+    .auth-body {
+      padding: 30px 25px;
+    }
+
+    .alert {
+      padding: 12px 15px;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      margin-bottom: 20px;
+      font-weight: 500;
+      line-height: 1.4;
+    }
+
+    .alert-error {
+      background: #fdecea;
+      color: #c0392b;
+      border: 1px solid #f5c6cb;
+    }
+
+    .alert-success {
+      background: #e8f8f0;
+      color: #0a7d2a;
+      border: 1px solid #c3e6cb;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: #34495e;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1.5px solid #dce1e7;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-family: 'Inter', sans-serif;
+      transition: border-color 0.2s;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: var(--primary-color);
+    }
+
+    .hint-text {
+      font-size: 0.78rem;
+      color: #7f8c8d;
+      margin-top: 4px;
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(120deg, var(--dark-color), var(--primary-color));
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      margin-top: 5px;
+    }
+
+    .btn-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(10, 125, 42, 0.25);
+    }
+
+    .form-section { display: none; }
+    .form-section.active { display: block; }
+  </style>
+</head>
+<body>
+
+  <div class="background-watermark"></div>
+
+  <div class="auth-container">
+    <div class="auth-header">
+      <h1>Menu de Sistemas</h1>
+      <p>SCP / UGTR / SATRE / SEAP</p>
+    </div>
+
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('login')">ENTRAR</button>
+      <button class="tab-btn" onclick="switchTab('cadastro')">SOLICITAR ACESSO</button>
+    </div>
+
+    <div class="auth-body">
+      <% if (erro) { %>
+        <div class="alert alert-error"><%= erro %></div>
+      <% } %>
+      <% if (sucesso) { %>
+        <div class="alert alert-success"><%= sucesso %></div>
+      <% } %>
+
+      <!-- FORMULÁRIO DE LOGIN -->
+      <form id="form-login" class="form-section active" action="/login" method="POST">
+        <input type="hidden" name="redirect" value="<%= redirect %>">
+        <div class="form-group">
+          <label>Usuário de Login</label>
+          <input type="text" name="username" required placeholder="Ex: joao" autocomplete="username">
+        </div>
+        <div class="form-group">
+          <label>Senha</label>
+          <input type="password" name="senha" required placeholder="••••••••" autocomplete="current-password">
+        </div>
+        <button type="submit" class="btn-submit">Entrar no Painel</button>
+      </form>
+
+      <!-- FORMULÁRIO DE CADASTRO -->
+      <form id="form-cadastro" class="form-section" action="/cadastro" method="POST">
+        <input type="hidden" name="redirect" value="<%= redirect %>">
+        <div class="form-group">
+          <label>Nome Completo</label>
+          <input type="text" name="nome" required placeholder="Digite seu nome completo">
+        </div>
+        <div class="form-group">
+          <label>Nome de Usuário (Login)</label>
+          <input type="text" name="username" required pattern="[a-zA-Z0-9._-]+" placeholder="Ex: joao">
+          <div class="hint-text">Use letras, números, ponto ou traço (sem espaços).</div>
+        </div>
+        <div class="form-group">
+          <label>Senha</label>
+          <input type="password" name="senha" required minlength="6" placeholder="Mínimo 6 caracteres">
+        </div>
+        <div class="form-group">
+          <label>Confirmar Senha</label>
+          <input type="password" name="confirmar_senha" required minlength="6" placeholder="Repita a senha">
+        </div>
+        <button type="submit" class="btn-submit">Solicitar Cadastro</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    function switchTab(tab) {
+      const buttons = document.querySelectorAll('.tab-btn');
+      const forms = document.querySelectorAll('.form-section');
+      buttons.forEach(b => b.classList.remove('active'));
+      forms.forEach(f => f.classList.remove('active'));
+
+      if (tab === 'login') {
+        buttons[0].classList.add('active');
+        document.getElementById('form-login').classList.add('active');
+      } else {
+        buttons[1].classList.add('active');
+        document.getElementById('form-cadastro').classList.add('active');
+      }
+    }
+  </script>
+</body>
+</html>
