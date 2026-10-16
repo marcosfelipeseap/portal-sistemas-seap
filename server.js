@@ -174,7 +174,7 @@ app.get('/login', (req, res) => {
         const ssoToken = jwt.sign(
           { id: user.id, nome: user.nome, username: user.username, cargo: user.cargo },
           JWT_SECRET,
-          { expiresIn: '2m' }
+          { expiresIn: '8h' }
         );
         const separador = redirect.includes('?') ? '&' : '?';
         return res.redirect(`${redirect}${separador}sso_token=${ssoToken}`);
@@ -220,21 +220,21 @@ app.post('/login', async (req, res) => {
     const tokenSessao = jwt.sign(
       { id: usuario.id, nome: usuario.nome, username: usuario.username, cargo: usuario.cargo },
       JWT_SECRET,
-      { expiresIn: '12h' }
+      { expiresIn: '8h' }
     );
 
     res.cookie('portal_token', tokenSessao, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
-      maxAge: 12 * 60 * 60 * 1000
+      maxAge: 8 * 60 * 60 * 1000
     });
 
     if (redirect) {
       const ssoToken = jwt.sign(
         { id: usuario.id, nome: usuario.nome, username: usuario.username, cargo: usuario.cargo },
         JWT_SECRET,
-        { expiresIn: '2m' }
+        { expiresIn: '8h' }
       );
       const separador = redirect.includes('?') ? '&' : '?';
       return res.redirect(`${redirect}${separador}sso_token=${ssoToken}`);
@@ -257,7 +257,6 @@ app.post('/cadastro', async (req, res) => {
   }
 
   try {
-    // Verifica se é o primeiro usuário do banco para torná-lo Admin e Ativo automaticamente
     const { count } = await supabase
       .from('usuarios')
       .select('*', { count: 'exact', head: true });
@@ -309,7 +308,6 @@ app.get('/', autenticar, async (req, res) => {
     .filter(([_, s]) => s.categoria === 'sistemas')
     .map(([key, s]) => ({ key, ...s }));
 
-  // Se for admin, conta quantos usuários estão aguardando aprovação para mostrar um aviso no topo
   let pendentesCount = 0;
   if (req.user.cargo === 'admin') {
     const { count } = await supabase
@@ -329,12 +327,11 @@ app.get('/', autenticar, async (req, res) => {
 
 // ==================== ROTAS DE ADMINISTRAÇÃO ====================
 
-// Painel de gestão de usuários
 app.get('/admin/usuarios', autenticar, apenasAdmin, async (req, res) => {
   const { data: usuarios, error } = await supabase
     .from('usuarios')
     .select('id, nome, username, cargo, ativo, criado_em')
-    .order('ativo', { ascending: true }) // Pendentes aparecem primeiro
+    .order('ativo', { ascending: true })
     .order('criado_em', { ascending: false });
 
   res.render('admin', {
@@ -344,12 +341,10 @@ app.get('/admin/usuarios', autenticar, apenasAdmin, async (req, res) => {
   });
 });
 
-// Aprovar ou bloquear login de um usuário
 app.post('/admin/usuarios/:id/status', autenticar, apenasAdmin, async (req, res) => {
   const { id } = req.params;
   const { ativo } = req.body;
 
-  // Impede que o próprio admin bloqueie a si mesmo
   if (id === req.user.id) return res.redirect('/admin/usuarios');
 
   await supabase
@@ -360,12 +355,10 @@ app.post('/admin/usuarios/:id/status', autenticar, apenasAdmin, async (req, res)
   res.redirect('/admin/usuarios');
 });
 
-// Tornar admin ou remover admin de outro usuário
 app.post('/admin/usuarios/:id/cargo', autenticar, apenasAdmin, async (req, res) => {
   const { id } = req.params;
   const { cargo } = req.body;
 
-  // Impede que o próprio admin remova seu próprio cargo
   if (id === req.user.id) return res.redirect('/admin/usuarios');
 
   await supabase
@@ -376,7 +369,6 @@ app.post('/admin/usuarios/:id/cargo', autenticar, apenasAdmin, async (req, res) 
   res.redirect('/admin/usuarios');
 });
 
-// Excluir um usuário
 app.post('/admin/usuarios/:id/excluir', autenticar, apenasAdmin, async (req, res) => {
   const { id } = req.params;
   if (id === req.user.id) return res.redirect('/admin/usuarios');
@@ -392,13 +384,22 @@ app.post('/admin/usuarios/:id/excluir', autenticar, apenasAdmin, async (req, res
 // ==================== ROTAS SSO ====================
 
 app.get('/ir/:chave', autenticar, (req, res) => {
-  const sistema = SISTEMAS[req.params.chave];
+  let chave = req.params.chave;
+
+  // Atalhos / Apelidos úteis para evitar erros de digitação nas chamadas
+  if (chave === 'serralheria') chave = 'serralheria_painel';
+  if (chave === 'malharia' || chave === 'upfem') chave = 'upfem_painel';
+  if (chave === 'seduc') chave = 'seduc_fundef';
+  if (chave === 'logistico' || chave === 'logistica') chave = 'logistico_demandas';
+  if (chave === 'artesanato') chave = 'artesanato_painel';
+
+  const sistema = SISTEMAS[chave];
   if (!sistema) return res.status(404).send('Sistema não encontrado');
 
   const ssoToken = jwt.sign(
     { id: req.user.id, nome: req.user.nome, username: req.user.username, cargo: req.user.cargo },
     JWT_SECRET,
-    { expiresIn: '5m' }
+    { expiresIn: '8h' }
   );
 
   const separador = sistema.url.includes('?') ? '&' : '?';
