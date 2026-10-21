@@ -123,6 +123,12 @@ const SISTEMAS = {
     titulo: 'SISTEMA DA SERRALHERIA',
     url: 'https://maroon-kingfisher-471984.hostingersite.com/',
     svgPath: 'M22.7 19l-9.1-9.1c.9-2.3.4-5-1.5-6.9-2-2-5-2.4-7.4-1.1L7.6 4.8 5.4 7 2.2 4.2C1 6.6 1.4 9.6 3.4 11.6c1.9 1.9 4.6 2.4 6.9 1.5l9.1 9.1c.4.4 1 .4 1.4 0l1.9-1.9c.4-.4.4-1.1 0-1.5z'
+  },
+  controle_memorando: {
+    categoria: 'sistemas',
+    titulo: 'SISTEMA DE CONTROLE DE MEMORANDO SCP',
+    url: 'https://memorandoscp.vercel.app/',
+    svgPath: 'M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z'
   }
 };
 
